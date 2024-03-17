@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    username: washindeiru
+    password: aha321
+    url: jdbc:postgresql://localhost/chat
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    show-sql: true
+#    properties:
+#      hibernate:
+#        show_sql: true

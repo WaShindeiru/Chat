@@ -1,7 +1,9 @@
 package org.example.chat.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.chat.dto.ChatMessageDto;
 import org.example.chat.dto.ConversationDto;
+import org.example.chat.persistence.ChatMessage;
 import org.example.chat.persistence.Conversation;
 import org.example.chat.service.BadConversationException;
 import org.example.chat.service.BadUserException;
@@ -33,6 +35,7 @@ public class ConversationController {
     @GetMapping(path="")
     public ResponseEntity<?> getMyConversations() {
         JwtAuthenticationToken auth = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        log.info("User " + auth.getName() + " requesting conversations");
         try {
             Collection<Conversation> conversations = conversationService.getUserConversationByName(auth.getName());
             return ResponseEntity.ok(conversations.stream()
@@ -58,7 +61,9 @@ public class ConversationController {
     @GetMapping(path="/{conversationId}/message")
     public ResponseEntity<?> getConversationMessages(@PathVariable String conversationId) {
         try {
-            return ResponseEntity.ok(conversationService.getConversationMessage(Long.parseLong(conversationId)));
+            return ResponseEntity.ok(conversationService.getConversationMessage(Long.parseLong(conversationId)).stream()
+                    .map(ChatMessageDto::new).collect(Collectors.toList()));
+
         } catch (BadConversationException e) {
             log.info(e.getMessage());
             return ResponseEntity.notFound().build();

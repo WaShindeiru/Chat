@@ -7,10 +7,10 @@ import org.example.chat.persistence.Conversation;
 public class ConversationDto {
 
    private Long id;
-   private String ConversationName;
+   private String conversationName;
 
    public ConversationDto(Conversation conversation) {
       this.id = conversation.getId();
-      this.ConversationName = conversation.getConversationName();
+      this.conversationName = conversation.getConversationName();
    }
 }

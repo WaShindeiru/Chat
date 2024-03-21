@@ -34,7 +34,7 @@ public class ConversationService {
         return conversationRepository.getConversationsForUser(storedUser.getId());
     }
 
-    public Iterable<ChatMessage> getConversationMessage(Long conversationId) throws BadConversationException {
+    public Collection<ChatMessage> getConversationMessage(Long conversationId) throws BadConversationException {
         Optional<Conversation> temp = conversationRepository.findById(conversationId);
         temp.orElseThrow(() -> new BadConversationException("Conversation with id: " + conversationId + " doesn't exists"));
         return messageRepository.getMessagesFromConversation(conversationId);

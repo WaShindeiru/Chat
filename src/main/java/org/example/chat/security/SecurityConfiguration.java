@@ -25,7 +25,10 @@ public class SecurityConfiguration {
       http
               .securityMatcher("/login", "/register")
               .httpBasic(Customizer.withDefaults())
-              .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+              .authorizeHttpRequests(auth -> auth
+                      .requestMatchers("/register").permitAll()
+                      .anyRequest().authenticated())
+
               .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
               .csrf(AbstractHttpConfigurer::disable)
               .cors(c -> {

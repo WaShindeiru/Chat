@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.server.resource.web.DefaultBearerTokenResolver;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -45,11 +46,39 @@ public class SecurityConfiguration {
       return http.build();
    }
 
+//   @Order(value = 3)
+//   @Bean
+//   public SecurityFilterChain webSocketSecurityFilterChain(HttpSecurity http) throws Exception {
+//      http
+//              .securityMatcher("/ws/**")
+//              .authorizeHttpRequests(auth -> auth
+//                      .anyRequest().permitAll())
+//
+//              .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//              .csrf(AbstractHttpConfigurer::disable)
+//              .cors(c -> {
+//                 CorsConfigurationSource source = request -> {
+//                    CorsConfiguration config = new CorsConfiguration();
+//                    config.setAllowedOrigins(List.of("*"));
+//                    config.setAllowedMethods(List.of("*"));
+//                    config.setAllowedHeaders(List.of("*"));
+//                    return config;
+//                 };
+//                 c.configurationSource(source);
+//              });
+//
+//      return http.build();
+//   }
+
    @Bean
    public SecurityFilterChain jwtSecurityFilterChain(HttpSecurity http) throws Exception {
+      DefaultBearerTokenResolver resolver = new DefaultBearerTokenResolver();
+      resolver.setAllowUriQueryParameter(true);
+
       http
               .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
-              .oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults()))
+              .oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults())
+                      .bearerTokenResolver(resolver))
               .csrf(AbstractHttpConfigurer::disable)
               .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
               .cors(c -> {
@@ -65,6 +94,7 @@ public class SecurityConfiguration {
 
       return http.build();
    }
+
 
 //   @Bean
 //   public CorsConfigurationSource corsConfigurationSource() {

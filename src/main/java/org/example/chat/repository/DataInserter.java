@@ -3,19 +3,11 @@ package org.example.chat.repository;
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.chat.persistence.Authority;
-import org.example.chat.persistence.ChatMessage;
 import org.example.chat.persistence.ChatUser;
-import org.example.chat.persistence.Conversation;
 import org.example.chat.service.ConversationService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Configuration
 @AllArgsConstructor

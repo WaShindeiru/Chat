@@ -4,12 +4,13 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.chat.dto.ChatMessageDtoWithoutId;
 
 import java.util.Date;
 
 @Entity
 @Getter
-@Setter()
+@Setter
 @NoArgsConstructor
 public class ChatMessage {
 
@@ -37,6 +38,11 @@ public class ChatMessage {
         this.sentDateTime = sentDateTime;
         this.sentBy = sentBy;
         this.origin = origin;
+    }
+
+    public ChatMessage(ChatMessageDtoWithoutId message) {
+        this.messageText = message.getMessageText();
+        this.sentDateTime = message.getSentDateTime();
     }
 
     public void setMessageSender(ChatUser user) {

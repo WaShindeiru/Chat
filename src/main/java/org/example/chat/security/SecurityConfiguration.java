@@ -80,7 +80,7 @@ public class SecurityConfiguration {
               .oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults())
                       .bearerTokenResolver(resolver))
               .csrf(AbstractHttpConfigurer::disable)
-              .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//              .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
               .cors(c -> {
                  CorsConfigurationSource source = request -> {
                     CorsConfiguration config = new CorsConfiguration();

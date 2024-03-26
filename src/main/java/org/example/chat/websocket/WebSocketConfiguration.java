@@ -23,6 +23,7 @@ public class WebSocketConfiguration implements WebSocketConfigurer {
 
    @Override
    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-      registry.addHandler(new ConversationWebSocketHandler(this.sessions), "/ws/message");
+      registry.addHandler(new ConversationWebSocketHandler(this.sessions), "/ws/message")
+              .setAllowedOrigins("http://localhost:4200");
    }
 }

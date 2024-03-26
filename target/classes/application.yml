@@ -2,7 +2,7 @@ spring:
   datasource:
     username: washindeiru
     password: aha321
-    url: jdbc:postgresql://localhost/electronics
+    url: jdbc:postgresql://localhost/chat
 
   jpa:
     hibernate:
@@ -12,3 +12,6 @@ spring:
 #    properties:
 #      hibernate:
 #        show_sql: true
+logging:
+  level:
+    root: debug

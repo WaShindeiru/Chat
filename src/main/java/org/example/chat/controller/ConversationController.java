@@ -3,6 +3,7 @@ package org.example.chat.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.chat.dto.ChatMessageDto;
 import org.example.chat.dto.ChatMessageDtoWithoutId;
+import org.example.chat.dto.ChatUserDto;
 import org.example.chat.dto.ConversationDto;
 import org.example.chat.persistence.Conversation;
 import org.example.chat.security.NotAuthorizedException;
@@ -27,22 +28,6 @@ public class ConversationController {
 
     private final static Logger log = LoggerFactory.getLogger(ConversationController.class);
     private final ConversationService conversationService;
-
-    @GetMapping(path="")
-    public ResponseEntity<?> getMyConversations() {
-        JwtAuthenticationToken auth = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        log.info("User " + auth.getName() + " requesting conversations");
-        try {
-            Collection<Conversation> conversations = conversationService.getUserConversationByName(auth.getName());
-            return ResponseEntity.ok(conversations.stream()
-                    .map(ConversationDto::new)
-                    .collect(Collectors.toList()));
-
-        } catch (BadUserException e) {
-            log.info(e.getMessage());
-            return ResponseEntity.notFound().build();
-        }
-    }
 
     @GetMapping(path="/user/{userId}")
     public ResponseEntity<?> getUserConversations(@PathVariable String userId) {
@@ -75,6 +60,27 @@ public class ConversationController {
             return ResponseEntity.status(403).build();
         } catch (BadConversationException | BadUserException exception) {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping(path="")
+    public ResponseEntity<?> getAllConversations() {
+        return ResponseEntity.ok(this.conversationService.getAllConversations());
+    }
+
+    @PostMapping(path="/{conversationId}/user")
+    public ResponseEntity<?> addUserToConversation(@RequestBody ChatUserDto user, @PathVariable Long conversationId) {
+        try {
+            var auth = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+            var temp = this.conversationService.addUserToConversation(user, conversationId);
+
+            Collection<Conversation> conversations = conversationService.getUserConversationByName(auth.getName());
+            return ResponseEntity.ok(conversations.stream()
+                    .map(ConversationDto::new)
+                    .collect(Collectors.toList()));
+
+        } catch(BadUserException | BadConversationException e) {
+            return ResponseEntity.status(404).build();
         }
     }
 }

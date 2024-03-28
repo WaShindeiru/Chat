@@ -26,4 +26,10 @@ public interface ConversationRepository extends JpaRepository<Conversation, Long
     WHERE conv.id = :id
     """)
     Optional<Conversation> findConversationById(@Param("id") Long id);
+
+    @Query("""
+    SELECT conv
+    FROM Conversation conv
+    """)
+    Collection<Conversation> findAllConversations();
 }

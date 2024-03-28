@@ -3,6 +3,8 @@ package org.example.chat.service;
 import lombok.RequiredArgsConstructor;
 import org.example.chat.dto.ChatMessageDto;
 import org.example.chat.dto.ChatMessageDtoWithoutId;
+import org.example.chat.dto.ChatUserDto;
+import org.example.chat.dto.ConversationDto;
 import org.example.chat.persistence.ChatMessage;
 import org.example.chat.persistence.ChatUser;
 import org.example.chat.persistence.Conversation;
@@ -17,11 +19,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.socket.WebSocketSession;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +32,6 @@ public class ConversationService {
     private final ConversationRepository conversationRepository;
     private final UserRepository userRepository;
     private final MessageRepository messageRepository;
-    private final Map<String, WebSocketSession> sessions;
     private final WebSocketService webSocketService;
 
     public Collection<Conversation> getUserConversation(Long userId) throws BadUserException {
@@ -77,5 +77,23 @@ public class ConversationService {
         webSocketService.sendMessageToAllActiveUsers(new ChatMessageDto(persistedMessage), users);
 
         return persistedMessage;
+    }
+
+    public Collection<ConversationDto> getAllConversations() {
+        return this.conversationRepository.findAllConversations().stream()
+                .map(ConversationDto::new).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public ConversationDto addUserToConversation(ChatUserDto user, Long conversationId) throws BadUserException, BadConversationException {
+        ChatUser domainUser = this.userRepository.findById(user.getUserId()).orElseThrow(
+                () -> new BadUserException("User with id: " + user.getUserId() + " doesn't exists"));
+        Conversation domainConversation = this.conversationRepository.findById(conversationId).orElseThrow(
+                () -> new BadConversationException("Conversation with id: " + conversationId + " doesn't exists"));
+
+        log.info("Adding user: " + domainUser.getUsername() + " to conversation: " + domainConversation.getConversationName());
+
+        domainConversation.addUser(domainUser);
+        return new ConversationDto(domainConversation);
     }
 }

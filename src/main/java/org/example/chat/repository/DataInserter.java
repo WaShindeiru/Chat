@@ -3,11 +3,19 @@ package org.example.chat.repository;
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.chat.persistence.Authority;
+import org.example.chat.persistence.ChatMessage;
 import org.example.chat.persistence.ChatUser;
+import org.example.chat.persistence.Conversation;
 import org.example.chat.service.ConversationService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Configuration
 @AllArgsConstructor
@@ -22,7 +30,6 @@ public class DataInserter implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
 
 //    @Override
-//    @Transactional
 //    public void run(String... args) throws Exception {
 //
 //        Conversation cybersecurityConversation = new Conversation("Cybersecurity");
@@ -65,6 +72,15 @@ public class DataInserter implements CommandLineRunner {
 //        jsMessage.add(new ChatMessage("Cword", new Date(), users.get(1), frontasie));
 //
 //        messageCrudRepository.saveAll(jsMessage);
+//
+//        List<Conversation> conversations = new ArrayList<>();
+//        conversations.add(new Conversation("Electro"));
+//        conversations.add(new Conversation("Kurwy"));
+//        conversations.add(new Conversation("Minio Fvlte conversation"));
+//        conversations.get(0).addUser(Minio);
+//        conversations.get(0).addUser(users.get(1));
+//
+//        conversationRepository.saveAll(conversations);
 //    }
 
     @Override

@@ -1,10 +1,7 @@
 package org.example.chat.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.chat.dto.ChatMessageDto;
-import org.example.chat.dto.ChatMessageDtoWithoutId;
-import org.example.chat.dto.ChatUserDto;
-import org.example.chat.dto.ConversationDto;
+import org.example.chat.dto.*;
 import org.example.chat.persistence.ChatMessage;
 import org.example.chat.persistence.ChatUser;
 import org.example.chat.persistence.Conversation;
@@ -95,5 +92,24 @@ public class ConversationService {
 
         domainConversation.addUser(domainUser);
         return new ConversationDto(domainConversation);
+    }
+
+    @Transactional
+    public ConversationDto createConversation(ConversationDtoWithoutId conversation, String userName) throws BadConversationException {
+        String conversationName = conversation.getConversationName();
+        ChatUser user = this.userRepository.findByUsername(userName).orElseThrow(
+                () -> new RuntimeException("Authenticated user with name: " + userName + " doesn't exists"));
+
+        var conversationTemp = conversationRepository.findConversationByName(conversationName);
+
+        if(conversationTemp.isPresent()) {
+            throw new BadConversationException("Conversation with name: " + conversationName + " already exists");
+        }
+
+        Conversation tempConversation = new Conversation(conversationName);
+        tempConversation.addUser(user);
+        Conversation persistedConversation = conversationRepository.save(tempConversation);
+
+        return new ConversationDto(persistedConversation);
     }
 }

@@ -1,10 +1,7 @@
 package org.example.chat.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.chat.dto.ChatMessageDto;
-import org.example.chat.dto.ChatMessageDtoWithoutId;
-import org.example.chat.dto.ChatUserDto;
-import org.example.chat.dto.ConversationDto;
+import org.example.chat.dto.*;
 import org.example.chat.persistence.Conversation;
 import org.example.chat.security.NotAuthorizedException;
 import org.example.chat.service.BadConversationException;
@@ -80,6 +77,19 @@ public class ConversationController {
                     .collect(Collectors.toList()));
 
         } catch(BadUserException | BadConversationException e) {
+            return ResponseEntity.status(404).build();
+        }
+    }
+
+    @PostMapping(path="")
+    public ResponseEntity<?> createConversation(@RequestBody ConversationDtoWithoutId conversation) {
+        var auth = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        String userName = auth.getName();
+
+        try {
+            ConversationDto persistedConversation = this.conversationService.createConversation(conversation, userName);
+            return ResponseEntity.ok(persistedConversation);
+        } catch (BadConversationException e) {
             return ResponseEntity.status(404).build();
         }
     }

@@ -32,4 +32,11 @@ public interface ConversationRepository extends JpaRepository<Conversation, Long
     FROM Conversation conv
     """)
     Collection<Conversation> findAllConversations();
+
+    @Query("""
+    SELECT conv
+    FROM Conversation conv
+    WHERE conv.conversationName = :name
+    """)
+    Optional<Conversation> findConversationByName(@Param("name") String name);
 }

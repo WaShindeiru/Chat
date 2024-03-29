@@ -60,6 +60,11 @@ public class ChatMessage {
         conversation.getMessages().add(this);
     }
 
+    public void removeMessageConversation(Conversation conversation) {
+        this.origin = null;
+        conversation.getMessages().remove(this);
+    }
+
     @Override
     public String toString() {
         return this.id + ", " + this.messageText + ", " + this.sentDateTime;

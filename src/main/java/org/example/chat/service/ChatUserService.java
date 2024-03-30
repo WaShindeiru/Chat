@@ -5,6 +5,7 @@ import org.example.chat.dto.ChatUserPasswordDto;
 import org.example.chat.persistence.ChatUser;
 import org.example.chat.persistence.UserStatus;
 import org.example.chat.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -15,6 +16,7 @@ import java.util.Optional;
 public class ChatUserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public ChatUser saveUser(ChatUserPasswordDto user) throws BadUserException {
         String username = user.getUsername();
@@ -26,8 +28,8 @@ public class ChatUserService {
         } else {
             ChatUser newUser = user.getChatUser();
             newUser.setStatus(UserStatus.ONLINE);
-            userRepository.save(newUser);
-            return userRepository.findByUsername(username).orElseThrow(RuntimeException::new);
+            newUser.setPassword(this.passwordEncoder.encode(user.getPassword()));
+            return userRepository.save(newUser);
         }
     }
 

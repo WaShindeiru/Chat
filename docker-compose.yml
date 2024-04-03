@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  db:
+    container_name: postgres_db
+    image: postgres:alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: securePassword321
+      POSTGRES_DB: chat
+
+    restart: always
+
+  spring:
+    depends_on:
+      - db
+    build: .
+    container_name: spring_chat
+    ports:
+      - '8080:8080'

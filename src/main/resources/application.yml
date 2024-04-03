@@ -1,17 +1,19 @@
 spring:
   datasource:
-    username: washindeiru
-    password: aha321
-    url: jdbc:postgresql://localhost/chat
+    username: test
+    password: securePassword321
+    url: jdbc:postgresql://db:5432/chat
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
 
     show-sql: true
+
 #    properties:
 #      hibernate:
 #        show_sql: true
+
 logging:
   level:
     root: info

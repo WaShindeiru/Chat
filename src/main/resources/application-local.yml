@@ -1,0 +1,4 @@
+datasource:
+  username: washindeiru
+  password: aha321
+  url: jdbc:postgresql://localhost:5432/chat

@@ -55,8 +55,8 @@ public class ConversationService {
         JwtAuthenticationToken auth = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         ChatUser user = userRepository.findByUsername(auth.getName()).orElseThrow(
                 () -> new RuntimeException("Authenticated user doesn't exists"));
-        ChatUser sender = userRepository.findById(message.getSentBy().getUserId()).orElseThrow(
-                () -> new BadUserException("User with id: " + message.getSentBy().getUserId() + "doesn't exists"));
+        ChatUser sender = userRepository.findById(message.getSentBy().getId()).orElseThrow(
+                () -> new BadUserException("User with id: " + message.getSentBy().getId() + "doesn't exists"));
         Conversation conversation = conversationRepository.findConversationById(conversationId).orElseThrow(
                 () -> new BadConversationException("Conversation with id: " + conversationId + "doesn't exists"));
         Collection<ChatUser> users = userRepository.getUserForConversationById(conversationId);
@@ -83,9 +83,10 @@ public class ConversationService {
 
     @Transactional
     public ConversationDto addUserToConversation(ChatUserDto user, Long conversationId) throws BadUserException, BadConversationException {
-        ChatUser domainUser = this.userRepository.findById(user.getUserId()).orElseThrow(
-                () -> new BadUserException("User with id: " + user.getUserId() + " doesn't exists"));
-        Conversation domainConversation = this.conversationRepository.findById(conversationId).orElseThrow(
+        Long userId = user.getId();
+        ChatUser domainUser = this.userRepository.findById(user.getId()).orElseThrow(
+                () -> new BadUserException("User with id: " + user.getId() + " doesn't exists"));
+        Conversation domainConversation = this.conversationRepository.findConversationById(conversationId).orElseThrow(
                 () -> new BadConversationException("Conversation with id: " + conversationId + " doesn't exists"));
 
         log.info("Adding user: " + domainUser.getUsername() + " to conversation: " + domainConversation.getConversationName());

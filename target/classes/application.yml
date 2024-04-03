@@ -2,11 +2,11 @@ spring:
   datasource:
     username: washindeiru
     password: aha321
-    url: jdbc:postgresql://localhost/electronics
+    url: jdbc:postgresql://localhost/chat
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 
     show-sql: true
 #    properties:

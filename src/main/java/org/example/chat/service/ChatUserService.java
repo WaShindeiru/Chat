@@ -9,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,8 +36,9 @@ public class ChatUserService {
         return this.userRepository.getUserForConversationById(id);
     }
 
-    public Optional<ChatUser> getUserByUsername(String username) {
-        return this.userRepository.findByUsername(username);
+    public ChatUser getUserByUsername(String username) throws BadUserException {
+        return this.userRepository.findByUsername(username).orElseThrow(
+                () -> new BadUserException("Authenticated user with username: " + username + "doesn't exist"));
     }
 
     public void disconnect(ChatUser user) {

@@ -32,8 +32,15 @@ public class UserController {
    @GetMapping(path="")
    public ResponseEntity<?> whoAmI() {
       JwtAuthenticationToken auth = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-      ChatUser user = userService.getUserByUsername(auth.getName()).orElseThrow(() -> new RuntimeException("Authenticated user doesn't exists"));
-      return ResponseEntity.ok(new ChatUserDto(user));
+
+      try {
+         ChatUser user = userService.getUserByUsername(auth.getName());
+         return ResponseEntity.ok(new ChatUserDto(user));
+
+      } catch (BadUserException e) {
+         log.info("Authenticated user doesn't exist");
+         return ResponseEntity.internalServerError().build();
+      }
    }
 
    @GetMapping(path="/conversation")

@@ -5,20 +5,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.example.chat.persistence.ChatUser;
-import org.example.chat.persistence.UserStatus;
 
 @Getter
-@NoArgsConstructor
 @Setter
+@NoArgsConstructor
 @ToString
-public class ChatUserDto {
+public class ChatUserPasswordIdDto {
    private Long id;
    private String username;
-   private UserStatus status;
+   private String password;
 
-   public ChatUserDto(ChatUser user) {
+   public ChatUserPasswordIdDto(ChatUser user) {
       this.id = user.getId();
       this.username = user.getUsername();
-      this.status = user.getStatus();
+      this.password = user.getPassword();
    }
 }

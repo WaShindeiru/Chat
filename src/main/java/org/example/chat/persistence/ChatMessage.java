@@ -6,7 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.chat.dto.ChatMessageDtoWithoutId;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -18,7 +19,7 @@ public class ChatMessage {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String messageText;
-    private Date sentDateTime;
+    private LocalDateTime sentDateTime;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "sent_by_user_id")
@@ -28,12 +29,12 @@ public class ChatMessage {
     @JoinColumn(name = "conversation_id")
     private Conversation origin;
 
-    public ChatMessage(String messageText, Date sentDateTime) {
+    public ChatMessage(String messageText, LocalDateTime sentDateTime) {
         this.messageText = messageText;
         this.sentDateTime = sentDateTime;
     }
 
-    public ChatMessage(String messageText, Date sentDateTime, ChatUser sentBy, Conversation origin) {
+    public ChatMessage(String messageText, LocalDateTime sentDateTime, ChatUser sentBy, Conversation origin) {
         this.messageText = messageText;
         this.sentDateTime = sentDateTime;
         this.sentBy = sentBy;

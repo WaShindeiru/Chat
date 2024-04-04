@@ -2,7 +2,7 @@ package org.example.chat.dto;
 
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -11,6 +11,6 @@ import java.util.Date;
 @ToString
 public class ChatMessageDtoWithoutId {
    private String messageText;
-   private Date sentDateTime;
+   private LocalDateTime sentDateTime;
    private ChatUserDto sentBy;
 }

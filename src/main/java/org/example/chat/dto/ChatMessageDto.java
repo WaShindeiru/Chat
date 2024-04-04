@@ -6,7 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.example.chat.persistence.ChatMessage;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -16,7 +16,7 @@ public class ChatMessageDto {
 
    private Long id;
    private String messageText;
-   private Date sentDateTime;
+   private LocalDateTime sentDateTime;
    private ChatUserDto sentBy;
    private ConversationDto conversation;
 

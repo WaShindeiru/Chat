@@ -1,14 +1,12 @@
 spring:
-  datasource:
-    username: test
-    password: securePassword321
-    url: jdbc:postgresql://db:5432/chat
+  profiles:
+    active: dev
 
   jpa:
     hibernate:
       ddl-auto: create-drop
 
-    show-sql: true
+    show-sql: false
 
 #    properties:
 #      hibernate:

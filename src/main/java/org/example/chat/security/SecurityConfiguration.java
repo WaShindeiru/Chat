@@ -46,30 +46,6 @@ public class SecurityConfiguration {
       return http.build();
    }
 
-//   @Order(value = 3)
-//   @Bean
-//   public SecurityFilterChain webSocketSecurityFilterChain(HttpSecurity http) throws Exception {
-//      http
-//              .securityMatcher("/ws/**")
-//              .authorizeHttpRequests(auth -> auth
-//                      .anyRequest().permitAll())
-//
-//              .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//              .csrf(AbstractHttpConfigurer::disable)
-//              .cors(c -> {
-//                 CorsConfigurationSource source = request -> {
-//                    CorsConfiguration config = new CorsConfiguration();
-//                    config.setAllowedOrigins(List.of("*"));
-//                    config.setAllowedMethods(List.of("*"));
-//                    config.setAllowedHeaders(List.of("*"));
-//                    return config;
-//                 };
-//                 c.configurationSource(source);
-//              });
-//
-//      return http.build();
-//   }
-
    @Bean
    public SecurityFilterChain jwtSecurityFilterChain(HttpSecurity http) throws Exception {
       DefaultBearerTokenResolver resolver = new DefaultBearerTokenResolver();
@@ -80,7 +56,7 @@ public class SecurityConfiguration {
               .oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults())
                       .bearerTokenResolver(resolver))
               .csrf(AbstractHttpConfigurer::disable)
-//              .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+              .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
               .cors(c -> {
                  CorsConfigurationSource source = request -> {
                     CorsConfiguration config = new CorsConfiguration();
@@ -94,18 +70,6 @@ public class SecurityConfiguration {
 
       return http.build();
    }
-
-
-//   @Bean
-//   public CorsConfigurationSource corsConfigurationSource() {
-//      CorsConfiguration configuration = new CorsConfiguration();
-//      configuration.setAllowedHeaders(List.of("*"));
-//      configuration.setAllowedOrigins(List.of("*"));
-//      configuration.setAllowedMethods(List.of("*"));
-//      UrlBasedCorsConfigurationSource urlSource = new UrlBasedCorsConfigurationSource();
-//      urlSource.registerCorsConfiguration("/**", configuration);
-//      return urlSource;
-//   }
 
    @Bean
    public PasswordEncoder passwordEncoder() {

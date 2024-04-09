@@ -14,7 +14,7 @@ public interface ConversationRepository extends JpaRepository<Conversation, Long
     ("""
     SELECT conv
     FROM Conversation conv
-    JOIN conv.users user 
+    JOIN conv.users user
     WHERE user.id = :id
     """)
     Collection<Conversation> getConversationsForUser(@Param("id") Long id);

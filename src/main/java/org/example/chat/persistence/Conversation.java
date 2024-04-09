@@ -3,7 +3,6 @@ package org.example.chat.persistence;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +35,14 @@ public class Conversation {
         this.messages = new ArrayList<>();
     }
 
-    public Conversation(String conversationName) {
+    public Conversation(Long id, String conversationName) {
         this();
+        this.id = id;
         this.conversationName = conversationName;
+    }
+
+    public Conversation(String conversationName) {
+        this(null, conversationName);
     }
 
     public void addUser(ChatUser user) {
@@ -64,5 +68,23 @@ public class Conversation {
     @Override
     public String toString() {
         return this.id + ": " + this.conversationName;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.conversationName.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == this) {
+            return true;
+        }
+
+        if (obj instanceof Conversation c) {
+           return c.getConversationName().equals(this.conversationName);
+        }
+
+        return false;
     }
 }

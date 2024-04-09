@@ -1,16 +1,12 @@
 spring:
   profiles:
-    active: dev
+    active: local
 
   jpa:
     hibernate:
       ddl-auto: create-drop
 
     show-sql: false
-
-#    properties:
-#      hibernate:
-#        show_sql: true
 
 logging:
   level:

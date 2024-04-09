@@ -7,4 +7,5 @@ RUN apk add --no-cache maven
 # Copy your project files and build the project
 COPY . .
 RUN mvn clean install
+EXPOSE 8080
 ENTRYPOINT ["java","-jar","target/Chat-0.0.1.jar"]

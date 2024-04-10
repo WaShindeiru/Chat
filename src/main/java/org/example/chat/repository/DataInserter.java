@@ -119,16 +119,16 @@ public class DataInserter implements CommandLineRunner {
         List<ChatUser> bookUsers = bookConversation.getUsers();
 
         List<ChatMessage> messages = new ArrayList<>();
-        messages.add(new ChatMessage("My bike is broken :(", LocalDateTime.now(), bicycleUsers.get(0), bicycleConversation));
-        messages.add(new ChatMessage("Oh no what happened?", LocalDateTime.now().plusSeconds(1), bicycleUsers.get(1), bicycleConversation));
-        messages.add(new ChatMessage("My front wheel is out of air", LocalDateTime.now().plusSeconds(2), bicycleUsers.get(0), bicycleConversation));
-        messages.add(new ChatMessage("That's terrible news, but I think I can help you with this", LocalDateTime.now().plusSeconds(3), bicycleUsers.get(2), bicycleConversation));
-        messages.add(new ChatMessage("Thank you so much", LocalDateTime.now().plusSeconds(4), bicycleUsers.get(0), bicycleConversation));
+        messages.add(new ChatMessage("My bike is broken :(", LocalDateTime.now().minusDays(1), bicycleUsers.get(0), bicycleConversation));
+        messages.add(new ChatMessage("Oh no what happened?", LocalDateTime.now().minusDays(1).plusSeconds(1), bicycleUsers.get(1), bicycleConversation));
+        messages.add(new ChatMessage("My front wheel is out of air", LocalDateTime.now().minusDays(1).plusSeconds(2), bicycleUsers.get(0), bicycleConversation));
+        messages.add(new ChatMessage("That's terrible news, but I think I can help you with this", LocalDateTime.now().minusDays(1).plusSeconds(3), bicycleUsers.get(2), bicycleConversation));
+        messages.add(new ChatMessage("Thank you so much", LocalDateTime.now().minusDays(1).plusSeconds(4), bicycleUsers.get(0), bicycleConversation));
 
-        messages.add(new ChatMessage("What do you think about Stephen King books?", LocalDateTime.now(), bookUsers.get(0), bookConversation));
-        messages.add(new ChatMessage("I like some of them and hate the rest", LocalDateTime.now().plusSeconds(1), bookUsers.get(1), bookConversation));
-        messages.add(new ChatMessage("I feel the same way", LocalDateTime.now().plusSeconds(2), bookUsers.get(2), bookConversation));
-        messages.add(new ChatMessage("My favourite one is Outsider", LocalDateTime.now().plusSeconds(3), bookUsers.get(1), bookConversation));
+        messages.add(new ChatMessage("What do you think about Stephen King books?", LocalDateTime.now().minusDays(1), bookUsers.get(0), bookConversation));
+        messages.add(new ChatMessage("I like some of them and hate the rest", LocalDateTime.now().minusDays(1).plusSeconds(1), bookUsers.get(1), bookConversation));
+        messages.add(new ChatMessage("I feel the same way", LocalDateTime.now().minusDays(1).plusSeconds(2), bookUsers.get(2), bookConversation));
+        messages.add(new ChatMessage("My favourite one is Outsider", LocalDateTime.now().minusDays(1).plusSeconds(3), bookUsers.get(1), bookConversation));
 
         messages.forEach((ChatMessage message) -> messageCrudRepository.save(message));
 

@@ -111,6 +111,8 @@ public class ConversationService {
         tempConversation.addUser(user);
         Conversation persistedConversation = conversationRepository.save(tempConversation);
 
-        return new ConversationDto(persistedConversation);
+        ConversationDto createdConversation = new ConversationDto(persistedConversation);
+        this.webSocketService.sendNewConversationNotification(createdConversation);
+        return createdConversation;
     }
 }

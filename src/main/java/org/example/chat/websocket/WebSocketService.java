@@ -3,6 +3,7 @@ package org.example.chat.websocket;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.example.chat.dto.ChatMessageDto;
+import org.example.chat.dto.ConversationDto;
 import org.example.chat.persistence.ChatUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,12 +34,29 @@ public class WebSocketService {
          }
       }
 
+      WebSocketMessage chatMessage = new WebSocketMessage();
+      chatMessage.setMessage(message);
+
       activeSessions.forEach((var session) -> {
          try {
-            session.sendMessage(new TextMessage(mapper.writeValueAsString(message)));
+            session.sendMessage(new TextMessage(mapper.writeValueAsString(chatMessage)));
          } catch (IOException e) {
             log.info("Mapping unsuccessful");
          }
       });
+   }
+
+   public void sendNewConversationNotification(ConversationDto conversation) {
+
+      WebSocketMessage chatMessage = new WebSocketMessage();
+      chatMessage.setConversation(conversation);
+
+      for(Map.Entry<String, WebSocketSession> session : this.sessions.entrySet()) {
+         try {
+            session.getValue().sendMessage(new TextMessage(mapper.writeValueAsString(chatMessage)));
+         } catch (IOException e) {
+            log.info("Mapping unsuccessful");
+         }
+      }
    }
 }

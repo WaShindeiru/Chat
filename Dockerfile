@@ -1,10 +1,7 @@
 FROM amazoncorretto:17-alpine-jdk
-# Setting work directory
 WORKDIR /app
-# Install Maven
 RUN apk add --no-cache maven
 
-# Copy your project files and build the project
 COPY . .
 RUN mvn clean install
 EXPOSE 8080
